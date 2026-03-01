@@ -3488,19 +3488,24 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=reply_markup
         )
         return
-    
     # Handle "My Stats" button
-    if text in ("My Stats", "📊 My Stats", BTN_MY_STATS):
-        today_count = get_today_otp_count(user_id)
-        bd_now = get_ist_now()
-        await update.message.reply_text(
-            "╔══════ 📊 *__USAGE DASHBOARD__* ══════╗\n\n"
-    f"   🕒  *_India Time (IST)_*\n"
-    f"      `{ist_now.strftime('%d %b %Y | %I:%M:%S %p')}`\n\n"
-    f"   📥  *_Today's OTP Count_*  ➜  *__{today_count}__*\n\n"
-    "╚═══════════════════════════════╝"
-)
-        return
+if text in ("📈 My Stats", "📊 My Stats", BTN_MY_STATS):
+    today_count = get_today_otp_count(user_id)
+    ist_now = get_ist_now()
+
+    message = (
+        "╔════════ 📊 *USAGE DASHBOARD* ════════╗\n\n"
+        "🕒  *India Time (IST)*\n"
+        "──────────────────────────────\n"
+        f"`{ist_now.strftime('%d %b %Y | %I:%M:%S %p')}`\n\n"
+        "📥  *Today's OTP Count*\n"
+        "──────────────────────────────\n"
+        f"➜  *{today_count}*\n\n"
+        "╚══════════════════════════════════════════╝"
+    )
+
+    await update.message.reply_text(message, parse_mode="Markdown")
+    return
     
     # Handle service selection (old format - for backward compatibility)
     if text in [
@@ -4420,6 +4425,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
