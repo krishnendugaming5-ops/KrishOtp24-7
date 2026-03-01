@@ -74,7 +74,7 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Service → appId mapping (known primary services)
 SERVICE_APP_IDS = {
-    "whatsapp": "WhatsApp",
+    "whatsapp": "Wh🔐atsApp",
     "facebook": "Facebook",
     "telegram": "Telegram",
 }
@@ -429,23 +429,23 @@ def is_number_used(number):
         return False
 
 
-def get_bd_today_str():
-    """Return today's date string in Asia/Dhaka timezone (YYYY-MM-DD)."""
-    # Asia/Dhaka is UTC+6 and has no DST currently
-    bd_now = datetime.now(timezone.utc) + timedelta(hours=6)
-    return bd_now.date().isoformat()
+def get_ist_today_str():
+    """Return today's date string in Asia/Kolkata timezone (YYYY-MM-DD)."""
+    # Asia/Kolkata is UTC+5:30 and has no DST currently
+    ist_now = datetime.now(timezone.utc) + timedelta(hours=6)
+    return ist_now.date().isoformat()
 
 
 def get_bd_now():
     """Return current datetime in Asia/Dhaka timezone (UTC+6)."""
     # Using fixed offset to avoid extra deps (Asia/Dhaka has no DST currently)
-    return datetime.now(timezone.utc) + timedelta(hours=6)
+    return datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)
 
 
 def increment_otp_count(user_id):
-    """Increment today's OTP count for a user (per Bangladesh time)."""
+    """Increment today's OTP count for a user (per India time)."""
     try:
-        today_str = get_bd_today_str()
+        today_str = get_ist_today_str()
         with db_lock:
             result = supabase.table('user_sessions').select('otp_count, otp_date').eq('user_id', int(user_id)).execute()
             otp_count = 0
@@ -471,9 +471,9 @@ def increment_otp_count(user_id):
 
 
 def get_today_otp_count(user_id):
-    """Get how many OTPs user received today (per Bangladesh time)."""
+    """Get how many OTPs user received today (per India time)."""
     try:
-        today_str = get_bd_today_str()
+        today_str = get_ist_today_str()
         with db_lock:
             result = supabase.table('user_sessions').select('otp_count, otp_date').eq('user_id', int(user_id)).execute()
             if result.data and len(result.data) > 0:
@@ -3492,11 +3492,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Handle "My Stats" button
     if text in ("My Stats", "📊 My Stats", BTN_MY_STATS):
         today_count = get_today_otp_count(user_id)
-        bd_now = get_bd_now()
+        bd_now = get_ist_now()
         await update.message.reply_text(
-            "📈 Usage Dashboard\n\n"
-            f"🕒 BD time now: {bd_now.strftime('%Y-%m-%d %I:%M:%S %p')}\n"
-            f"✅ OTP received today: {today_count}"
+            ""╔═══ 📊 *USAGE DASHBOARD* ═══╗\n\n"
+f"🕒  *India Time (IST)*\n"
+f"   `{bd_now.strftime('%d-%m-%Y  %I:%M:%S %p')}`\n\n"
+f"📥  *OTP Received Today*  ➜  *{today_count}*\n\n"
+"╚══════════════════════╝"
         )
         return
     
@@ -4418,4 +4420,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
