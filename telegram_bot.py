@@ -3494,12 +3494,12 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         today_count = get_today_otp_count(user_id)
         bd_now = get_ist_now()
         await update.message.reply_text(
-            ""╔═══ 📊 *USAGE DASHBOARD* ═══╗\n\n"
-f"🕒  *India Time (IST)*\n"
-f"   `{bd_now.strftime('%d-%m-%Y  %I:%M:%S %p')}`\n\n"
-f"📥  *OTP Received Today*  ➜  *{today_count}*\n\n"
-"╚══════════════════════╝"
-        )
+            "╔══════ 📊 *__USAGE DASHBOARD__* ══════╗\n\n"
+    f"   🕒  *_India Time (IST)_*\n"
+    f"      `{ist_now.strftime('%d %b %Y | %I:%M:%S %p')}`\n\n"
+    f"   📥  *_Today's OTP Count_*  ➜  *__{today_count}__*\n\n"
+    "╚═══════════════════════════════╝"
+)
         return
     
     # Handle service selection (old format - for backward compatibility)
@@ -4420,5 +4420,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
