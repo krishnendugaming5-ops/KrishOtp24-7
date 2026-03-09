@@ -56,7 +56,7 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 if not BOT_TOKEN:
     raise ValueError("BOT_TOKEN environment variable is required. Please set it in Render environment variables.")
 ADMIN_USER_ID = int(os.getenv("ADMIN_USER_ID", "5742928021"))
-OTP_CHANNEL_ID = int(os.getenv("OTP_CHANNEL_ID", "-1003403204287"))  # Channel ID for forwarding OTP messages
+OTP_CHANNEL_ID = int(os.getenv("OTP_CHANNEL_ID", "-1003885800961"))  # Channel ID for forwarding OTP messages
 AUTO_APPROVE_USERS = True
 CONSOLE_CHANNEL_FORWARD_ENABLED = False
 
